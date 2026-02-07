@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --watch index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,14 @@
   "bugs": {
     "url": "https://github.com/sandrablanco/segundo-proyect-break/issues"
   },
-  "homepage": "https://github.com/sandrablanco/segundo-proyect-break#readme"
+  "homepage": "https://github.com/sandrablanco/segundo-proyect-break#readme",
+  "dependencies": {
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.6"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11"
+  }
 }
