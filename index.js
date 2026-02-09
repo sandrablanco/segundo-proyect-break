@@ -2,13 +2,16 @@ const express = require('express');
 const app = express();
 const PORT = 3003;
 const mongoose = require('mongoose');
-//const swaggerUi = require('swagger-ui-express');
+// const swaggerUi = require('swagger-ui-express');
 
 const { dbConnection } = require('./config/db');
-//const routes = require('./routes');
+
+dbConnection();
+
 app.use(express.json());
 
-//app.use('/', routes);
+const productRoutes = require('./routes/productRoutes');
+app.use('/', routes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
