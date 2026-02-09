@@ -10,7 +10,7 @@ const ProductSchema = new mongoose.Schema({
         required:true,
     },
     image:{
-        type: String,/*url cloudinary*/
+        type: String, //url cloudinary
         default: "" //luego se puede meter la img
     },
     category:{
@@ -24,10 +24,10 @@ const ProductSchema = new mongoose.Schema({
         enum: ['XS', 'S', 'M', 'L', 'XL'],
     },
     price:{
-    type: Number,
-    required:true,
-},
+        type: Number,
+        required:true,
+    },
 },
 {timestamps:true})
 
-module.exports = mongoose.model("Product", ProductSchema, "tienda" );//guardo en colección test
+module.exports = mongoose.model("Product", ProductSchema, "tienda");//guardo en colección tienda

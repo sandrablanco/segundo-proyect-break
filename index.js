@@ -1,20 +1,20 @@
 const express = require('express');
 const app = express();
-require("dotenv").config();
-const productRoutes = require('./routes/productRoutes');
+const PORT = process.env.PORT || 3000;
+const mongoose = require('mongoose');
 const dbConnection = require('./config/db');
-dbConnection();
 
+const productRoutes = require('./routes/productRoutes');
 app.use(express.json());
-app.use("/",productRoutes);
+
+app.use("/", productRoutes);
 //app.use(express.urlencoded({extended:true}));
-app.post('/test', (req, res) => {
-  res.json({ message: 'Test route works', body: req.body });
-});
 
+const startServer = async () => {
+  await dbConnection();
+  app.listen(PORT, () =>
+    console.log(`Server started on port ${PORT}`)
+  );
+};
 
-
-
-
-
-module.exports = app;
+startServer(); //evita que se intenten consultas sin conexión

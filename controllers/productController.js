@@ -6,7 +6,6 @@ const productController = {
   createProduct: async (req, res) => {
     try {
       const newProduct = await productModel.create(req.body);
-
       res.status(201).json({
         message: "Product created",
         data: newProduct

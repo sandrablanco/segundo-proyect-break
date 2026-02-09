@@ -6,7 +6,4 @@ router.post('/create', productController.createProduct);
 router.get('/products', productController.showProducts);
 router.get('/products/:id',productController.showProductById);
 
-
-
-
 module.exports = router;
