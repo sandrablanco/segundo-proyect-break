@@ -1,18 +1,20 @@
 const express = require('express');
 const app = express();
-const PORT = 3003;
-const mongoose = require('mongoose');
-// const swaggerUi = require('swagger-ui-express');
-
-const { dbConnection } = require('./config/db');
-
+require("dotenv").config();
+const productRoutes = require('./routes/productRoutes');
+const dbConnection = require('./config/db');
 dbConnection();
 
 app.use(express.json());
-
-const productRoutes = require('./routes/productRoutes');
-app.use('/', productRoutes);
-
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+app.use("/",productRoutes);
+//app.use(express.urlencoded({extended:true}));
+app.post('/test', (req, res) => {
+  res.json({ message: 'Test route works', body: req.body });
 });
+
+
+
+
+
+
+module.exports = app;
