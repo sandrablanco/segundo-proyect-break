@@ -11,7 +11,7 @@ dbConnection();
 app.use(express.json());
 
 const productRoutes = require('./routes/productRoutes');
-app.use('/', routes);
+app.use('/', productRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
