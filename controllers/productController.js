@@ -45,10 +45,56 @@ const productController = {
       console.error(error);
       res.status(500).json({ error: "Server error" });
     }
-  }
+  },
 
-};
 //ADMIN
-
+//listar productos
+showDashboard: async (req, res) => {
+  try {
+    const products = await productModel.find();
+    console.log(products);
+    let html = `<h1>Home page</h1>`;
+    for (const product of products) {
+      html += `<div>
+          <h3>${product.title}</h3>
+          <p>${product.description}</p>
+          <img src="${product.image}" width="150">
+          <p><strong>${product.price}€</strong></p>
+      </div>`;
+    }
+    res.send(html);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error loading home page" });
+  }
+},
+showNewProductForm: async (req, res) => {
+  try {
+    const fields = [
+      {label: "title", name: "title",type: "text"},
+      {label: "description", name: "description",type: "text"},
+      {label: "image", name: "image",type: "text"}, 
+      {label: "category", name: "category",type: "text"},
+      {label: "size", name: "size",type: "text"},
+      {label: "price", name: "price",type: "number"},
+    ];
+    let html = `<h1>New Product</h1>
+    <form action="/create" method="POST">`;
+    for (const field of fields) {
+      html += `<label>${field.label}</label><br>
+      <input type="${field.type}" name="${field.name}" required><br><br>`;
+      }
+      html += `<button type="submit">Create Product</button>
+      </form>`;
+      res.send(html);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error loading new product page" });
+      
+  }
+}
+};
+      
+      
 
 module.exports = productController;

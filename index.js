@@ -6,9 +6,10 @@ const dbConnection = require('./config/db');
 
 const productRoutes = require('./routes/productRoutes');
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 app.use("/", productRoutes);
-//app.use(express.urlencoded({extended:true}));
+
 
 const startServer = async () => {
   await dbConnection();
@@ -19,4 +20,4 @@ const startServer = async () => {
 
 startServer(); //evita que se intenten consultas sin conexión
 
-module.exports = app; //exportamos app para usarlo en los tests
+//module.exports = app; //exportamos app para usarlo en los tests
