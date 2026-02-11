@@ -48,5 +48,7 @@ const productController = {
   }
 
 };
+//ADMIN
+
 
 module.exports = productController;

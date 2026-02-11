@@ -18,3 +18,5 @@ const startServer = async () => {
 };
 
 startServer(); //evita que se intenten consultas sin conexión
+
+module.exports = app; //exportamos app para usarlo en los tests
