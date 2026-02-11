@@ -68,7 +68,7 @@ showDashboard: async (req, res) => {
     res.status(500).json({ error: "Error loading home page" });
   }
 },
-showNewProductForm: async (req, res) => {
+showNewProduct: async (req, res) => {
   try {
     const fields = [
       {label: "title", name: "title",type: "text"},
@@ -78,18 +78,42 @@ showNewProductForm: async (req, res) => {
       {label: "size", name: "size",type: "text"},
       {label: "price", name: "price",type: "number"},
     ];
-    let html = `<h1>New Product</h1>
-    <form action="/create" method="POST">`;
-    for (const field of fields) {
-      html += `<label>${field.label}</label><br>
-      <input type="${field.type}" name="${field.name}" required><br><br>`;
-      }
-      html += `<button type="submit">Create Product</button>
-      </form>`;
+    let html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>New Product</title>
+        </head>
+        <body>
+          <h1>New Product</h1>
+          <form action="/create" method="POST">
+            <label>Title</label><br>
+            <input type="text" name="title" required><br><br>
+            
+            <label>Description</label><br>
+            <input type="text" name="description" required><br><br>
+            
+            <label>Image</label><br>
+            <input type="text" name="image" required><br><br>
+            
+            <label>Category</label><br>
+            <input type="text" name="category" required><br><br>
+            
+            <label>Size</label><br>
+            <input type="text" name="size" required><br><br>
+            
+            <label>Price</label><br>
+            <input type="number" name="price" required><br><br>
+            
+            <button type="submit">Create Product</button>
+          </form>
+        </body>
+        </html>
+      `;
       res.send(html);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error loading new product page" });
+    res.status(500).json({ error: "Error loading new product form page" });
       
   }
 }
