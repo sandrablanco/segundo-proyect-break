@@ -4,7 +4,16 @@ const productController = {
   // CREATE
   createProduct: async (req, res) => {
     try {
-      const newProduct = await productModel.create(req.body);
+      const imageUrl = req.file ? req.file.path : ''; // req.file contiene la info de la imagen subida a Cloudinary
+                                                              // req.file.path es la URL de la imagen en Cloudinary
+      const newProduct = await productModel.create({
+        title: req.body.title,
+        description: req.body.description,
+        image: imageUrl, // Guardamos la URL de la imagen en el producto la url es automatica en cloudinary
+        category: req.body.category,
+        size: req.body.size,
+        price: req.body.price
+      });
       res.redirect('/dashboard');
     } catch (error) {
       console.error(error);
@@ -74,7 +83,10 @@ const productController = {
           <title>New Product</title>
         </head>
         <body>
+          <a href="/dashboard">← Back to Home Page</a>
           <h1>New Product</h1>
+        <enctype="multipart/form-data">
+        <form action="/dashboard" method="POST" enctype="multipart/form-data">
           <form action="/create" method="POST">
             <label>Title</label><br>
             <input type="text" name="title" required><br><br>
@@ -82,8 +94,9 @@ const productController = {
             <label>Description</label><br>
             <input type="text" name="description" required><br><br>
             
-            <label>Image</label><br>
-            <input type="text" name="image" required><br><br>
+            <label>Upload Image</label><br>
+            <type="file">
+            <input type="file" name="image" accept="image/*" required><br><br>
             
             <label>Category</label><br>
             <input type="text" name="category" required><br><br>
@@ -178,16 +191,22 @@ const productController = {
         <body>
           <a href="/dashboard">Go Home Page</a>
           <h1>Edit Product</h1>
-          <form action="/dashboard/${product._id}?_method=PUT" method="POST">
+          <!-- Show current image-->
+          <p>Current Image:</p>
+           <img src="${product.image}" width="150" style="border-radius: 8px;"><br><br>
+        
+        <!-- IMPORTANTE: enctype="multipart/form-data" -->
+        <form action="/dashboard/${product._id}?_method=PUT" method="POST" enctype="multipart/form-data">
             <label>Title</label><br>
             <input type="text" name="title" value="${product.title}" required><br><br>
             
             <label>Description</label><br>
             <input type="text" name="description" value="${product.description}" required><br><br>
             
-            <label>URL Image</label><br>
-            <input type="text" name="image" value="${product.image}" required><br><br>
-            
+            <label>Change Image (optional)</label><br>
+            <!-- type="file" - no es required porque puede mantener la imagen actual -->
+            <input type="file" name="image" accept="image/*"><br><br>
+           
             <label>Category</label><br>
             <select name="category" required>
               ${optionsCategories}

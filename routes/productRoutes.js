@@ -1,22 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
-// console.log('Funciones en productController:', Object.keys(productController));
-// console.log('Tipo:', typeof productController);
-// console.log('¿Es función?', typeof productController.showNewProduct);
-// console.log('Keys:', Object.keys(productController));
-// console.log('showNewProduct:', productController.showNewProduct);
+const upload = require('../middlewares/uploadMiddleware');
 
-router.post('/create', productController.createProduct);//ruta admin
-router.get('/products', productController.showProducts);//ruta publica
-router.get('/products/:id',productController.showProductById);//ruta publica 
-router.get('/dashboard', productController.showDashboard);//ruta admin
-router.get('/dashboard/new', productController.showNewProduct);//ruta admin
-router.post('/dashboard', productController.createProduct);
+//RUTAS PÚBLICAS TIENDA
+router.get('/products', productController.showProducts);
+router.get('/products/:id', productController.showProductById);
+
+//RUTAS DASHBOARD ADMIN
+
+// Ver dashboard y formularios (sin upload, solo lectura)
+router.get('/dashboard', productController.showDashboard);
+router.get('/dashboard/new', productController.showNewProduct);
+
+// Crear producto (CON upload de imagen) ← AQUÍ VA EL UPLOAD
+router.post('/dashboard', upload.single('image'), productController.createProduct);
+
+// Ver detalle y formulario de edición (sin upload, solo lectura)
 router.get('/dashboard/:productId', productController.showDashboardProduct);
 router.get('/dashboard/:productId/edit', productController.showEditProduct);
-router.put('/dashboard/:productId', productController.updateProduct);
-router.delete('/dashboard/:productId/delete', productController.deleteProduct);
 
+// Actualizar producto (CON upload de imagen opcional) ← AQUÍ VA EL UPLOAD
+router.put('/dashboard/:productId', upload.single('image'), productController.updateProduct);
+
+// Eliminar producto (sin upload)
+router.delete('/dashboard/:productId/delete', productController.deleteProduct);
 
 module.exports = router;
