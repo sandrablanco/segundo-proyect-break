@@ -236,8 +236,17 @@ const productController = {
   updateProduct: async (req, res) => {
     try {
       const { productId } = req.params;
-      const { title, description, image, category, size, price } = req.body;
-      await productModel.findByIdAndUpdate(productId, { title, description, image, category, size, price });
+      const updateData = {
+        title: req.body.title,
+        description: req.body.description,
+        category: req.body.category,
+        size: req.body.size,
+        price: req.body.price
+      };//si se sube una nueva imagen, actualizamos el campo image con la nueva URL de Cloudinary, si no se sube imagen, mantenemos la URL actual
+      if (req.file) {
+        updateData.image = req.file.path
+      }
+      await productModel.findByIdAndUpdate(productId, updateData);
       res.redirect(`/dashboard/${productId}`);
     } catch (error) {
       console.error(error);
