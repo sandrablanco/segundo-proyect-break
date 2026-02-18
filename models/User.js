@@ -41,15 +41,14 @@ const UserSchema = new mongoose.Schema({
 },
 {timestamps:true});
 //middleware para encriptar o hashear la contraseña antes de guardarla en la base de datos
-UserSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function() {
     //solo encripta si la contra fue modificada
-    if (!this.isModified('password')) return next();
+    if (!this.isModified('password')) return;
     try {
         const salt = await bcrypt.genSalt(10);  //salt valor aleatorio q se añade antes de cifrarla 2users con misma contra no tengan mismo hash
         this.password = await bcrypt.hash(this.password, salt); //hash la contraseña con el salt
-        next();
      } catch (error) {
-        next(error);
+        throw error ;
     }
 });
 
