@@ -65,7 +65,9 @@ const productController = {
             <p>${product.description}</p>
             <img src="${product.image}" width="150">
             <p><strong>${product.price}€</strong></p>
-        </div>`;
+        </div>
+        <a href="/logout" style="color:blue;">Logout</a>
+        `
       }
       res.send(html);
     } catch (error) {
