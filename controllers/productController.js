@@ -58,7 +58,7 @@ const productController = {
     try {
       const products = await productModel.find();
       console.log(products);
-      let html = `<h1>Home page</h1>`;
+         let html = `<h1>Home page</h1>`;
       for (const product of products) {
         html += `<div>
             <h3>${product.title}</h3>
@@ -75,6 +75,35 @@ const productController = {
       res.status(500).json({ error: "Error loading home page" });
     }
   },
+     /* let productsHtml = ''
+      for (const product of products) {
+        productsHtml += `
+        <h1>Home page</h1>
+        <section>
+        <div>
+            <h3>${product.title}</h3>
+            <p>${product.description}</p>
+            <img src="${product.image}" width="150">
+            <p><strong>${product.price}€</strong></p>
+        </div>
+        </section>
+        `;
+         let html = `
+      <h1>Home page</h1>
+      ${productsHtml}
+       <form action="/logout" method="POST" style="display:inline;">
+       <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;text-decoration:none;padding:0;">
+        Logout
+      </button>
+      </form>
+        `;
+      }
+      res.send(html);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Error loading home page" });
+    }
+  },*/
 
   showNewProduct: async (req, res) => {
     try {
