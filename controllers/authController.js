@@ -17,16 +17,17 @@ const authController = {
         </head>
         <body>
         <div class="login-box">
-          <h1>Admin Login</h1>
+          <h1>Login</h1>
           ${req.query.error ? '<p class="error">Invalid username or password</p>' : ''}
            
           <form action="/login" method="POST">
             <label>Username</label>
-            <input type="text" name="username" required placeholder="admin">
+            <input type="text" name="username" required placeholder="name">
             
             <label>Password</label>
             <input type="password" name="password" required placeholder="••••••">
-              <button type="submit">Login</button>
+              <button type="submit">Login</button><br></br>
+              <button type="submit">Register</button>
           </form>
             </div>
         </body>

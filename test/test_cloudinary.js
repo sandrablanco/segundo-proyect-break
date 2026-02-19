@@ -1,13 +1,13 @@
 require('dotenv').config();
 // DEBUG - Ver qué variables carga
 console.log('=== VARIABLES DE ENTORNO ===');
-console.log('CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME || '❌ NO EXISTE');
-console.log('CLOUDINARY_API_KEY:', process.env.CLOUDINARY_API_KEY || '❌ NO EXISTE');
-console.log('CLOUDINARY_API_SECRET:', process.env.CLOUDINARY_API_SECRET ? '✅ EXISTE' : '❌ NO EXISTE');
+console.log('CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME || 'NO EXISTE');
+console.log('CLOUDINARY_API_KEY:', process.env.CLOUDINARY_API_KEY || 'NO EXISTE');
+console.log('CLOUDINARY_API_SECRET:', process.env.CLOUDINARY_API_SECRET ? ' EXISTE' : ' NO EXISTE');
 
 // Solo continuar si existen
 if (!process.env.CLOUDINARY_API_KEY) {
-  console.log('\n❌ ERROR: No se cargaron las variables de Cloudinary');
+  console.log('\n ERROR: No se cargaron las variables de Cloudinary');
   console.log('Revisa tu archivo .env');
   process.exit(1);
 }
