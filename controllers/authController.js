@@ -25,11 +25,20 @@ const authController = {
             <input type="text" name="username" required placeholder="name">
             
             <label>Password</label>
-            <input type="password" name="password" required placeholder="••••••">
+            <input type="password" name="password" required placeholder="•••••••••">
               <button type="submit">Login</button><br></br>
-              <button type="submit">Register</button>
           </form>
             </div>
+            <br>
+           <button type="button" onclick="window.location.href='/register'">
+           Register
+           </button>
+           <br>
+           <p>
+           Don't have an account yet?
+          <a href="/register">
+            <button type="button">Create a new account</button></a>
+           </p>
         </body>
         </html>
         `;

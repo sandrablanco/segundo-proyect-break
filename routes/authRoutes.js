@@ -4,7 +4,9 @@ const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 
 router.get('/login', authController.showLogin);
+// router.get('/dashboard', userController.dashboard);
 router.post('/login', authController.login);
+router.get('/logout', authController.logout); 
 router.post('/logout', authController.logout); 
 // Registro de nuevo usuario
 router.get('/register', (req, res) => {
@@ -27,7 +29,7 @@ router.get('/register', (req, res) => {
             <button type="submit">Register</button>
           </form>
           <br>
-          <a href="/login"><button>I already have an account</button></a>
+          <a href="/login"><button type="button">I already have an account</button></a>
         </body>
         </html>
     `);

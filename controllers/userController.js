@@ -38,18 +38,18 @@ const userController = {
     res.send(`
       <h1>Welcome ${user.username}</h1>
       <form action="/logout" method="POST">
-        <button type="submit">Cerrar sesión</button>
+        <button type="submit">Logout</button>
       </form>
     `);
-  },
-
-  // logout
-  logout: (req, res) => {
-    req.session.destroy(() => {
-      res.redirect('/');
-    });
   }
-
 };
+  // logout
+//   logout: (req, res) => {
+//     req.session.destroy(() => {
+//       res.redirect('/');
+//     });
+//   }
+
+// };
 
 module.exports = userController;
