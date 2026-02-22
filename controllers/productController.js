@@ -14,7 +14,7 @@ const productController = {
         size: req.body.size,
         price: req.body.price
       });
-      res.redirect('/dashboard');
+      res.redirect('/products/dashboard');
     } catch (error) {
       console.error(error);
       res.status(500).send('Error creating product');
@@ -56,13 +56,19 @@ const productController = {
   // Listar productos
   showDashboard: async (req, res) => {
   if (!req.session.userId) {
-    return res.redirect('/login');
+    return res.redirect('/auth/login');
   }
 
   try {
     const products = await productModel.find();
 
     let html = `<h1>Home page</h1>`;
+    
+     html += `
+      <form action="/auth/logout" method="POST">
+        <button type="submit">Logout</button>
+      </form>
+    `;
 
     for (const product of products) {
       html += `
@@ -75,12 +81,6 @@ const productController = {
       `;
     }
 
-    html += `
-      <form action="/logout" method="POST">
-        <button type="submit">Logout</button>
-      </form>
-    `;
-
     res.send(html);
 
   } catch (error) {
@@ -88,51 +88,47 @@ const productController = {
     res.status(500).json({ error: "Error loading home page" });
   }
 },
-  showNewProduct: async (req, res) => {
-    try {
-      let html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>New Product</title>
-        </head>
-        <body>
-          <a href="/dashboard">← Back to Home Page</a>
-          <h1>New Product</h1>
-        <enctype="multipart/form-data">
-        <form action="/dashboard" method="POST" enctype="multipart/form-data">
-          <form action="/create" method="POST">
-            <label>Title</label><br>
-            <input type="text" name="title" required><br><br>
-            
-            <label>Description</label><br>
-            <input type="text" name="description" required><br><br>
-            
-            <label>Upload Image</label><br>
-            <type="file">
-            <input type="file" name="image" accept="image/*" required><br><br>
-            
-            <label>Category</label><br>
-            <input type="text" name="category" required><br><br>
-            
-            <label>Size</label><br>
-            <input type="text" name="size" required><br><br>
-            
-            <label>Price</label><br>
-            <input type="number" name="price" required><br><br>
-            
-            <button type="submit">Create Product</button>
-          </form>
-        </body>
-        </html>
-      `;
-      res.send(html);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error loading new product form page" });
-    }
-  },
-
+ showNewProduct: async (req, res) => {
+  try {
+    let html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>New Product</title>
+      </head>
+      <body>
+        <a href="/products/dashboard">← Back to Home Page</a>
+        <h1>New Product</h1>
+        <form action="/products/dashboard" method="POST">
+          <label>Title</label><br>
+          <input type="text" name="title" required><br><br>
+          
+          <label>Description</label><br>
+          <input type="text" name="description" required><br><br>
+          
+          <label>Upload Image</label><br>
+          <input type="file" name="image" accept="image/*" required><br><br>
+          
+          <label>Category</label><br>
+          <input type="text" name="category" required><br><br>
+          
+          <label>Size</label><br>
+          <input type="text" name="size" required><br><br>
+          
+          <label>Price</label><br>
+          <input type="number" name="price" required><br><br>
+          
+          <button type="submit">Create Product</button>
+        </form>
+      </body>
+      </html>
+    `;
+    res.send(html);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error loading new product form page" });
+  }
+},
   showDashboardProduct: async (req, res) => {
     try {
       const { productId } = req.params;
@@ -149,7 +145,7 @@ const productController = {
           <title>${product.title}</title>
         </head>
         <body>
-          <a href="/dashboard">Go Home Page</a>
+          <a href="/products/dashboard">Go Home Page</a>
           <h1>${product.title}</h1>
           <img src="${product.image}" width="150">
           <p><strong>Description:</strong> ${product.description}</p>
@@ -158,10 +154,10 @@ const productController = {
           <p><strong>Price:</strong> ${product.price}€</p>
 
           <div>
-            <a href="/dashboard/${product._id}/edit">
+            <a href="/products/dashboard/${product._id}/edit">
               <button>Edit Product</button>
             </a>
-            <form action="/dashboard/${product._id}/delete?_method=DELETE" method="POST">
+            <form action="/products/dashboard/${product._id}/delete?_method=DELETE" method="POST">
               <button type="submit" onclick="return confirm('¿Are you sure you want to delete this product?')">Delete Product</button>
             </form>
           </div>
@@ -203,22 +199,19 @@ const productController = {
           <title>Edit Product ${product.title}</title>
         </head>
         <body>
-          <a href="/dashboard">Go Home Page</a>
+          <a href="/products/dashboard">Go Home Page</a>
           <h1>Edit Product</h1>
-          <!-- Show current image-->
-          <p>Current Image:</p>
+            <p>Current Image:</p>
            <img src="${product.image}" width="150" style="border-radius: 8px;"><br><br>
         
-        <!-- IMPORTANTE: enctype="multipart/form-data" -->
-        <form action="/dashboard/${product._id}?_method=PUT" method="POST" enctype="multipart/form-data">
+        <form action="products/dashboard/${product._id}?_method=PUT" method="POST">
             <label>Title</label><br>
             <input type="text" name="title" value="${product.title}" required><br><br>
             
             <label>Description</label><br>
             <input type="text" name="description" value="${product.description}" required><br><br>
             
-            <label>Change Image (optional)</label><br>
-            <!-- type="file" - no es required porque puede mantener la imagen actual -->
+            <label>You can change the image</label><br>
             <input type="file" name="image" accept="image/*"><br><br>
            
             <label>Category</label><br>
@@ -261,7 +254,7 @@ const productController = {
         updateData.image = req.file.path
       }
       await productModel.findByIdAndUpdate(productId, updateData);
-      res.redirect(`/dashboard/${productId}`);
+      res.redirect(`/products/dashboard/${productId}`);
     } catch (error) {
       console.error(error);
       res.status(500).send('Error updating product');
@@ -272,7 +265,7 @@ const productController = {
     try {
       const { productId } = req.params;
       await productModel.findByIdAndDelete(productId);
-      res.redirect('/dashboard');
+      res.redirect('/products/dashboard');
     } catch (error) {
       console.error(error);
       res.status(500).send('Error deleting product');

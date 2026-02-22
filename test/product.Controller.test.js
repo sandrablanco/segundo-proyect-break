@@ -23,7 +23,7 @@ describe('createProduct', () => {
       price: 24.99
     };
     const response = await request(app)
-      .post('/create')
+      .post('/products/create')
       .send(newProduct);
     expect(response.statusCode).toBe(201);
     expect(response.body.message).toBe("Product created");
@@ -49,7 +49,7 @@ describe('createProduct', () => {
         size: "L",
         price: 19.99
       });
-      const response = await request(app).get('/products');
+      const response = await request(app).get('/products/products');
       expect(response.statusCode).toBe(200);  
       expect(Array.isArray(response.body)).toBe(true);//comprueba que lo qe me devuelve es array
       expect(response.body.length).toBeGreaterThan(0); //comprueba que la lista tiene al menos un producto
@@ -74,7 +74,7 @@ describe('createProduct', () => {
         size: "S",
         price: 13.99
       });
-      const response = await request(app).get(`/products/${newProduct._id}`);
+      const response = await request(app).get(`/products/products/${newProduct._id}`);
       expect(response.statusCode).toBe(200);
       expect(response.body.message).toBe("Product found");
       expect(response.body.data.title).toBe("Camiseta roja");
@@ -82,7 +82,7 @@ describe('createProduct', () => {
 
     it('should return 404 if product not found', async () => {
       const nonExistentId = new mongoose.Types.ObjectId();
-      const response = await request(app).get(`/products/${nonExistentId}`);
+      const response = await request(app).get(`/products/products/${nonExistentId}`);
       expect(response.statusCode).toBe(404);
       expect(response.body.error).toBe("Product not found");
     });

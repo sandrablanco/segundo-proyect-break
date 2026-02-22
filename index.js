@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const session = require('express-session'); 
@@ -9,8 +10,6 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 
-const listEndpoints = require('express-list-endpoints');
-
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,32 +18,31 @@ app.use(session({
   secret: process.env.USER_SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, maxAge: 24*60*60*1000 }//dura 24h
+  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 } // 24 horas
 }));
 
+// Swagger
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocument = require("./docs");
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+// Montar routers con prefijos
+app.use('/auth', authRoutes);
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
+
+// Conexión a base de datos y levantar servidor
 const startServer = async () => {
-  await dbConnection();
-  console.log('Database connected successfully');
+  try {
+    await dbConnection();
+    console.log('Database connected successfully');
 
- 
-  // Montar routers
-
-  app.use('/auth', authRoutes);
-  app.use('/products', productRoutes);
-  app.use('/users', userRoutes);
-
-
-  // Lista rutas con prefijos
-  
-  console.log('RUTAS REGISTRADAS:');
-  console.table(listEndpoints(app));
-
- 
-  // Iniciamos servidor
-  
-  app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-  });
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Error starting server:', error);
+  }
 };
 
 startServer(); //evita que se intenten consultas sin conexión

@@ -19,7 +19,7 @@ const userController = {
       // Guardar usuario en sesión
       req.session.userId = newUser._id;
 
-      return res.redirect('/dashboard');
+      return res.redirect('/products/dashboard');
 
     } catch (error) {
       console.error(error);
@@ -30,26 +30,24 @@ const userController = {
   // redireccion al dashboard
   dashboard: async (req, res) => {
     if (!req.session.userId) {
-      return res.redirect('/');
+      return res.redirect('/auth/login');
     }
 
     const user = await User.findById(req.session.userId);
 
     res.send(`
       <h1>Welcome ${user.username}</h1>
-      <form action="/logout" method="POST">
+      <form action="/auth/logout" method="POST">
         <button type="submit">Logout</button>
       </form>
     `);
+  },
+  logout: async (req, res) => {
+    req.session.destroy(err => {
+        if (err) console.error(err);
+        res.redirect('/auth/login');
+    });
   }
 };
-  // logout
-//   logout: (req, res) => {
-//     req.session.destroy(() => {
-//       res.redirect('/');
-//     });
-//   }
-
-// };
 
 module.exports = userController;

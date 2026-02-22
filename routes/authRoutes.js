@@ -19,7 +19,7 @@ router.get('/register', (req, res) => {
         </head>
         <body>
           <h1>Create new user</h1>
-          <form action="/register" method="POST">
+          <form action="/auth/register" method="POST">
             <label>Username</label>
             <input type="text" name="username" required placeholder="name"><br>
             <label>Email</label>
@@ -29,7 +29,7 @@ router.get('/register', (req, res) => {
             <button type="submit">Register</button>
           </form>
           <br>
-          <a href="/login"><button type="button">I already have an account</button></a>
+          <a href="/auth/login"><button type="button">I already have an account</button></a>
         </body>
         </html>
     `);
