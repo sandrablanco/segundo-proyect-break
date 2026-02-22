@@ -18,7 +18,7 @@ app.use(session({
   secret: process.env.USER_SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 } // 24 horas
+  cookie: { secure: true/*desarrollo poner en false*/, maxAge: 24 * 60 * 60 * 1000 } // 24 horas
 }));
 
 // Swagger
