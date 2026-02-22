@@ -20,7 +20,9 @@ app.use(session({
   saveUninitialized: false,
   cookie: { secure: true/*desarrollo poner en false*/, maxAge: 24 * 60 * 60 * 1000 } // 24 horas
 }));
-
+app.get('/', (req, res) => {
+  res.send('API funcionando correctamente 🚀');
+});
 // Swagger
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./docs");
