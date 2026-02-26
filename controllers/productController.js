@@ -23,39 +23,85 @@ const productController = {
 
   // READ ALL
   showProducts: async (req, res) => {
-    try {
-      const products = await productModel.find();
-      res.json(products);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error fetching products" });
-    }
-  },
+  try {
+    const products = await productModel.find();
 
+    let html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>All Products</title>
+      </head>
+      <body>
+        <h1>All Products</h1>
+        <a href="/products/dashboard">Go Dashboard</a>
+    `;
+
+    for (const product of products) {
+      html += `
+        <div>
+          <h3>${product.title}</h3>
+          <p>${product.description}</p>
+          <img src="${product.image}" width="150">
+          <p><strong>${product.price}€</strong></p>
+          <a href="/products/${product._id}">View Product</a>
+        </div>
+      `;
+    }
+
+    html += `
+      </body>
+      </html>
+    `;
+
+    res.send(html);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error fetching products");
+  }
+},
+ 
   // READ ONE
   showProductById: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const product = await productModel.findById(id);
+  try {
+    const { id } = req.params;
+    const product = await productModel.findById(id);
 
-      if (!product) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-
-      res.json({
-        message: "Product found",
-        data: product
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Server error" });
+    if (!product) {
+      return res.status(404).send("<h1>Product not found</h1>");
     }
-  },
 
+    let html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>${product.title}</title>
+      </head>
+      <body>
+        <a href="/products/products">← Back to all products</a>
+        <h1>${product.title}</h1>
+        <img src="${product.image}" width="200">
+        <p>${product.description}</p>
+        <p><strong>Category:</strong> ${product.category}</p>
+        <p><strong>Size:</strong> ${product.size}</p>
+        <p><strong>Price:</strong> ${product.price}€</p>
+      </body>
+      </html>
+    `;
+
+    res.send(html);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+},
+ 
   // ADMIN
   // Listar productos
   showDashboard: async (req, res) => {
-  if (!req.session.userId) {
+  if (req.session.userId) {
     return res.redirect('/auth/login');
   }
 
